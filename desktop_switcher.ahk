@@ -98,18 +98,30 @@ getSessionId()
     return SessionId
 }
 
+_createEnoughDesktops(targetDesktop) {
+    global DesktopCount
+
+    ; Create virtual desktop if it does not exist
+    while (targetDesktop > DesktopCount) {
+        createVirtualDesktop()
+    }
+    return
+}
+
 _switchDesktopToTarget(targetDesktop)
 {
     ; Globals variables should have been updated via updateGlobalVariables() prior to entering this function
     global CurrentDesktop, DesktopCount, LastOpenedDesktop
 
     ; Don't attempt to switch to an invalid desktop
-    if (targetDesktop > DesktopCount || targetDesktop < 1 || targetDesktop == CurrentDesktop) {
+    if (targetDesktop < 1 || targetDesktop == CurrentDesktop) {
         OutputDebug, [invalid] target: %targetDesktop% current: %CurrentDesktop%
         return
     }
 
     LastOpenedDesktop := CurrentDesktop
+	
+	_createEnoughDesktops(targetDesktop)
 
     ; Fixes the issue of active windows in intermediate desktops capturing the switch shortcut and therefore delaying or stopping the switching sequence. This also fixes the flashing window button after switching in the taskbar. More info: https://github.com/pmb6tz/windows-desktop-switcher/pull/19
     WinActivate, ahk_class Shell_TrayWnd
@@ -233,4 +245,27 @@ deleteVirtualDesktop()
     DesktopCount--
     CurrentDesktop--
     OutputDebug, [delete] desktops: %DesktopCount% current: %CurrentDesktop%
+}
+
+closeWindow(){
+    global CurrentDesktop
+
+    WinClose, A
+    focusTheForemostWindow(CurrentDesktop)
+}
+
+quitWindow(){
+    ;quite current window
+    WinClose, A
+}
+
+
+toggleMaximize(){
+    WinGet, maximized, MinMax, A
+
+    if maximized {
+        WinRestore A
+    } else {
+        WinMaximize A
+    }
 }
