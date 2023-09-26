@@ -57,10 +57,10 @@
 ; #+a::switchDesktopToLeft()
 #+l::MoveCurrentWindowToRightDesktop()
 #+h::MoveCurrentWindowToLeftDesktop()
-^#tab::switchDesktopToLastOpened()
+#+tab::switchDesktopToLastOpened()
 
-^#c::createVirtualDesktop()
-^#d::deleteVirtualDesktop()
+#+c::createVirtualDesktop()
+#+d::deleteVirtualDesktop()
 
 ; CapsLock & q::MoveCurrentWindowToDesktop(1)
 ; CapsLock & w::MoveCurrentWindowToDesktop(2)
