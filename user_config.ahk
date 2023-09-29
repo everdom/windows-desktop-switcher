@@ -160,4 +160,9 @@
 #+Enter::Run *RunAs powershell
 
 ; PowerShell
-#Enter::Run, C:\Program Files\PowerShell\7\pwsh.exe -WorkingDirectory C:\Users\DELL -Nologo
+#Enter::
+EnvGet, HOMEDRIVE, HOMEDRIVE
+EnvGet, HOMEPATH, HOMEPATH
+EnvGet, OutputVar, % A_Is64bitOS ? "ProgramW6432" : "ProgramFiles"
+
+Run, %OutputVar%\PowerShell\7\pwsh.exe -WorkingDirectory %HOMEDRIVE%/%HOMEPATH% -Nologo
